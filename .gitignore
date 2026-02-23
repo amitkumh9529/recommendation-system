@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.env
+
+# Data & Models
+data/raw/
+data/processed/
+models/
+artifacts/
+logs/
+mlflow/
+
+# Node
+frontend/node_modules/
+frontend/.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+*.csv
+*.zip
