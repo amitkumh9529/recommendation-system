@@ -1,0 +1,37 @@
+# docker-compose.yml
+version: "3.9"
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:latest
+    ports: ["5000:5000"]
+    command: mlflow server --host 0.0.0.0
+
+  api:
+    build: .
+    ports: ["8000:8000"]
+    volumes: ["./models:/app/models", "./logs:/app/logs"]
+    depends_on: [mlflow]
+    command: python run_api.py
+
+  frontend:
+    build: ./frontend
+    ports: ["3000:3000"]
+    depends_on: [api]
+
+
+## How Everything Connects
+# ```
+# python app.py
+#     └── TrainingPipeline.run_pipeline()
+#             ├── DataIngestion        → downloads & extracts data
+#             ├── DataValidation       → checks schema, nulls, duplicates
+#             ├── DataTransformation   → encodes, negative samples, splits
+#             ├── ModelTrainer         → trains NeuralCF + logs to MLflow
+#             ├── ModelEvaluation      → computes NDCG@10, HitRate@10
+#             └── ModelPusher          → builds FAISS index, copies to /models
+
+# python run_api.py
+#     └── FastAPI server (port 8000)
+#             ├── GET /api/v1/recommend/{user_id}   → PredictionPipeline
+#             ├── GET /api/v1/similar/{item_id}     → PredictionPipeline
+#             └── POST /api/v1/feedback             → logs feedback to DB

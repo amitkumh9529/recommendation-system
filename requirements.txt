@@ -1,0 +1,26 @@
+# Core ML
+torch>=2.0.0
+torchvision
+numpy
+pandas
+scikit-learn
+faiss-cpu
+
+# API
+fastapi
+uvicorn[standard]
+pydantic
+
+# Tracking
+mlflow
+
+# Data
+requests
+PyYAML
+tqdm
+
+# Testing
+pytest
+
+# Frontend (install separately via npm)
+# react, react-dom, axios, tailwindcss
