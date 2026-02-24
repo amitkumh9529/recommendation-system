@@ -47,7 +47,7 @@ class NeuralCF(nn.Module):
 
     def forward(self, users, items):
         x = torch.cat([self.user_embed(users), self.item_embed(items)], dim=-1)
-        return self.mlp(x).squeeze()
+        return self.mlp(x).squeeze(-1)
 
 class ModelTrainer:
     def __init__(self, config: ModelTrainerConfig, transformation_artifact: DataTransformationArtifact):
